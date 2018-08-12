@@ -41,7 +41,26 @@ class pronounceMoney{
 
         if($splitMoney){
 
-            return $this->calculateHundreds($this->euro["thousand"])." ".$this->thousands[1]." ".$this->calculateHundreds($this->euro["hundred"])." Euro ".$this->cent."\n";
+            $thousands = $this->calculateHundreds($this->euro["thousand"]);
+            $hundreds = $this->calculateHundreds($this->euro["hundred"]);
+
+            if($hundreds == "zero" AND $thousands == "zero"){
+
+                return "zero euro ".$this->cent."\n";
+
+            }elseif($thousands == "zero" AND $hundreds != "zero"){
+
+                return $this->calculateHundreds($this->euro["hundred"])." Euro ".$this->cent."\n";
+
+            }elseif($thousands != "zero" AND $hundreds == "zero"){
+
+                return $this->calculateHundreds($this->euro["thousand"])." ".$this->thousands[1]." Euro ".$this->cent."\n";
+
+            }else{
+
+                return $this->calculateHundreds($this->euro["thousand"])." ".$this->thousands[1]." ".$this->calculateHundreds($this->euro["hundred"])." Euro ".$this->cent."\n";
+
+            }
 
         }else{
             return "";
@@ -65,7 +84,7 @@ class pronounceMoney{
 
             return false;
         
-        }elseif($number[0] > 999999 OR  $number[1] > 99 ){
+        }elseif($number[0] > 999999){
         
             return false;
         
@@ -95,6 +114,10 @@ class pronounceMoney{
             $pronounce = $pronounce . $this->numbers[intval($numberTwoDigit)];
         }
 
+        if($pronounce == ""){
+            $pronounce = "zero";
+        }
+
         return $pronounce;
         
     }
@@ -109,11 +132,25 @@ class pronounceMoney{
             $cent = $splitMoney;
         }
 
-        if($cent != 0){
-            $cent =  $cent." Cent";
-    } else{
-        $cent = "";
-    }
+        if($cent > 99){
+
+            $cent =  substr($cent,0,2)." Cent";
+
+        }elseif($cent[0] == 0 and isset($cent[1])){
+
+            $cent = $cent[1]." Cent"; 
+
+        }elseif($cent < 10){
+
+                $cent = $cent."0 Cent";
+
+        }if($cent == 0){
+
+            $cent = "Zero Cent";
+
+        }else{
+            $cent = $cent." Cent";
+        }
 
         $this->cent = $cent;
 
@@ -138,9 +175,9 @@ class pronounceMoney{
 
 $pronounceMoney = new pronounceMoney();
 
-//echo $pronounceMoney->convert("927 356,98");
+echo $pronounceMoney->convert("0");
 
-$pronounceMoney->file("Input.txt","Output.txt");
+//$pronounceMoney->file("Input.txt","Output.txt");
 
 
 
