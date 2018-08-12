@@ -131,20 +131,19 @@ class pronounceMoney{
         }else{
             $cent = $splitMoney;
         }
-
         if($cent > 99){
 
             $cent =  substr($cent,0,2)." Cent";
 
-        }elseif($cent[0] == 0 and isset($cent[1])){
+        }elseif($cent[0] == 0 and isset($cent[1]) and $cent[1] > 0){
 
             $cent = $cent[1]." Cent"; 
 
-        }elseif($cent < 10){
+        }elseif($cent < 10 and $cent > 0){
 
                 $cent = $cent."0 Cent";
 
-        }if($cent == 0){
+        }elseif($cent == 0){
 
             $cent = "Zero Cent";
 
@@ -175,9 +174,9 @@ class pronounceMoney{
 
 $pronounceMoney = new pronounceMoney();
 
-echo $pronounceMoney->convert("0");
+//echo $pronounceMoney->convert("0");
 
-//$pronounceMoney->file("Input.txt","Output.txt");
+$pronounceMoney->file("Input.txt","Output.txt");
 
 
 
